@@ -15,8 +15,11 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     public GameObject Invisibility;
     public GameObject Weight;
+    public GameObject Magnet;
 
     public GameObject Coin;
+    public GameObject Rocket;
+    public GameObject Bomb;
 
     public GameObject Ready;
     public GameObject Set;
@@ -94,8 +97,8 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public void CreateAsteroid()
     {
         int asteroidNumber = Random.Range(0, 8);
-        int randomBuff = Random.Range(0, 2);
-        int randomBuff2 = Random.Range(0, 2);
+        int randomBuff = Random.Range(0, 3);
+        int randomBuff2 = Random.Range(0, 3);
         if (asteroidNumber%8==0)
         {
             Instantiate(AsteroidPrefab, new Vector3(
@@ -162,6 +165,14 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
                     0.0f
                 ), Quaternion.identity);
             }
+            else
+            {
+                Instantiate(Magnet, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
         }
         else if (asteroidNumber % 8 == 7)
         {
@@ -175,7 +186,15 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
             }
             else if (randomBuff2 == 1)
             {
-                Instantiate(Weight, new Vector3(
+                Instantiate(Rocket, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(Bomb, new Vector3(
                     Random.Range(-maxWidth, maxWidth),
                     maxHeight + 3.0f,
                     0.0f

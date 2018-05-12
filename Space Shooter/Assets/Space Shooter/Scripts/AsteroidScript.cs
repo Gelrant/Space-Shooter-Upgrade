@@ -38,7 +38,7 @@ public class AsteroidScript : MonoBehaviour {
             {
                 AudioSource.PlayClipAtPoint(asteroidDieSound, new Vector3(0,0,0));
 
-                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight"))
+                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight" || this.gameObject.tag == "Rocket" || this.gameObject.tag == "Magnet" || this.gameObject.tag == "Bomb"))
                 {
                     if (this.gameObject.tag == "Coin")
                     {

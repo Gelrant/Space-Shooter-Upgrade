@@ -5,18 +5,24 @@ using System;
 public class SpaceShipScript : MonoBehaviour {
 
 
-    public float speed = 15.0f;
+    public float speed = 10.0f;
     public GameObject LaserPrefab;
     public AudioSource LaserSound;
     public AudioSource spaceShipDeathSound;
     public AudioSource beInvisibleSound;
     public AudioSource weightIncreaseSound;
     public AudioSource coinTakeSound;
+    public AudioSource rocketSound;
+    public AudioSource bombSound;
 
     private float maxWidth;
     private float maxHeight;
 
+    private GameObject[] coins;
+    private GameObject[] asteroids;
+
     private bool canShoot = true;
+    private bool canCollect = false;
 
     private SpaceShipGameControllerScript gameController;
 
@@ -32,7 +38,17 @@ public class SpaceShipScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if(canCollect)
+        {
+            coins = GameObject.FindGameObjectsWithTag("Coin");
+            foreach (GameObject coin in coins)
+            {
+                gameController.AddScore(2);
+                coinTakeSound.Play();
+                Destroy(coin);
 
+            }
+        }
         transform.Translate(Input.GetAxis("Vertical") * -speed * Time.deltaTime,
                             Input.GetAxis("Horizontal") * speed * Time.deltaTime,
                             0.0f);
@@ -79,6 +95,34 @@ public class SpaceShipScript : MonoBehaviour {
             gameController.AddScore(2);
 
         }
+        else if (other.gameObject.tag == "Rocket")
+        {
+            rocketSound.Play();
+            speed = 20.0f;
+            Destroy(other.gameObject);
+            StartCoroutine(Weight());
+
+        }
+        else if (other.gameObject.tag == "Magnet")
+        {
+            coinTakeSound.Play();
+            Destroy(other.gameObject);
+            StartCoroutine(Magnet());
+            canCollect = true;
+
+        }
+        else if (other.gameObject.tag == "Bomb")
+        {
+            bombSound.Play();
+            Destroy(other.gameObject);
+            asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+            foreach (GameObject asteroid in asteroids)
+            {
+                Destroy(asteroid);
+
+            }
+
+        }
         else
         {
             spaceShipDeathSound.Play();
@@ -100,7 +144,14 @@ public class SpaceShipScript : MonoBehaviour {
     {
         yield return new WaitForSeconds(6);
         beInvisibleSound.Play();
-        speed = 15.0f;
+        speed = 10.0f;
+    }
+
+    IEnumerator Magnet()
+    {
+        yield return new WaitForSeconds(15);
+        beInvisibleSound.Play();
+        canCollect = false;
     }
 
 }
