@@ -7,6 +7,7 @@ public class AsteroidScript : MonoBehaviour {
     public AudioClip asteroidHitSound;
     public AudioClip asteroidDieSound;
     public int armor;
+    public int type;
 
     private float maxHeight;
     
@@ -23,10 +24,17 @@ public class AsteroidScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(0.0f, -speed * Time.deltaTime, 0.0f);
+        if (type == 0)
+        {
+            transform.Translate(0.0f, -speed * Time.deltaTime, 0.0f);
 
-        if (transform.position.y < -maxHeight)
-            Destroy(gameObject);
+            if (transform.position.y < -maxHeight)
+                Destroy(gameObject);
+        }
+        else if (type ==1)
+        {
+
+        }
 
     }
 
@@ -38,7 +46,7 @@ public class AsteroidScript : MonoBehaviour {
             {
                 AudioSource.PlayClipAtPoint(asteroidDieSound, new Vector3(0,0,0));
 
-                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight" || this.gameObject.tag == "Rocket" || this.gameObject.tag == "Magnet" || this.gameObject.tag == "Bomb"))
+                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight" || this.gameObject.tag == "Rocket" || this.gameObject.tag == "Magnet" || this.gameObject.tag == "Bomb" || this.gameObject.tag == "EnemyBird"))
                 {
                     if (this.gameObject.tag == "Coin")
                     {

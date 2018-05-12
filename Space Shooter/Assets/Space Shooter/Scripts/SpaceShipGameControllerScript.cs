@@ -13,6 +13,8 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public GameObject AsteroidPrefab5;
     public GameObject AsteroidPrefab6;
 
+    public GameObject EnemyBird;
+
     public GameObject Invisibility;
     public GameObject Weight;
     public GameObject Magnet;
@@ -73,22 +75,31 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (watch.Elapsed.TotalSeconds > 20 && watchController ==0)
+        if (watch.Elapsed.TotalSeconds > 10 && watchController ==0)
         {
             CancelInvoke();
             watchController = 1;
             increaseDifficulty();
         }
-        else if (watch.Elapsed.TotalSeconds > 40 && watchController == 1)
+        else if (watch.Elapsed.TotalSeconds > 20 && watchController == 1)
         {
             CancelInvoke();
             watchController = 2;
             increaseDifficulty2();
         }
-        else if (watch.Elapsed.TotalSeconds > 60 && watchController == 2 && (activeScene.name.Equals("Boss")))
+        else if (watch.Elapsed.TotalSeconds > 30 && watchController == 2 && (activeScene.name.Equals("Boss")))
         {
             CancelInvoke();
+            watchController = 3;
+            StartCoroutine(Wait2());
         }
+    }
+
+    IEnumerator Wait2()
+    {
+
+        yield return new WaitForSeconds(3);
+        increaseDifficulty3();
     }
 
     void increaseDifficulty()
@@ -101,114 +112,130 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
         InvokeRepeating("CreateAsteroid", 1.0f, 0.25f);
     }
 
+    void increaseDifficulty3()
+    {
+        InvokeRepeating("CreateAsteroid", 1.0f, 1.5f);
+    }
+
     public void CreateAsteroid()
     {
-        int asteroidNumber = Random.Range(0, 8);
-        int randomBuff = Random.Range(0, 3);
-        int randomBuff2 = Random.Range(0, 3);
-        if (asteroidNumber%8==0)
+        if (!(watchController == 3))
         {
-            Instantiate(AsteroidPrefab, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if(asteroidNumber%8==1)
-        {
-            Instantiate(AsteroidPrefab2, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if (asteroidNumber % 8 == 2)
-        {
-            Instantiate(AsteroidPrefab3, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if (asteroidNumber % 8 == 3)
-        {
-            Instantiate(AsteroidPrefab4, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if (asteroidNumber % 8 == 4)
-        {
-            Instantiate(AsteroidPrefab5, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if (asteroidNumber % 8 == 5)
-        {
-            Instantiate(AsteroidPrefab6, new Vector3(
-                Random.Range(-maxWidth, maxWidth),
-                maxHeight + 3.0f,
-                0.0f
-            ), Quaternion.identity);
-        }
-        else if (asteroidNumber % 8 == 6)
-        {
-            if (randomBuff == 0)
+            int asteroidNumber = Random.Range(0, 8);
+            int randomBuff = Random.Range(0, 3);
+            int randomBuff2 = Random.Range(0, 3);
+            if (asteroidNumber % 8 == 0)
             {
-                Instantiate(Invisibility, new Vector3(
-                    Random.Range(-maxWidth, maxWidth),
-                    maxHeight + 3.0f,
-                    0.0f
-                ), Quaternion.identity);        
-            }
-            else if (randomBuff == 1)
-            {
-                Instantiate(Weight, new Vector3(
+                Instantiate(AsteroidPrefab, new Vector3(
                     Random.Range(-maxWidth, maxWidth),
                     maxHeight + 3.0f,
                     0.0f
                 ), Quaternion.identity);
             }
-            else
+            else if (asteroidNumber % 8 == 1)
             {
-                Instantiate(Magnet, new Vector3(
+                Instantiate(AsteroidPrefab2, new Vector3(
                     Random.Range(-maxWidth, maxWidth),
                     maxHeight + 3.0f,
                     0.0f
                 ), Quaternion.identity);
             }
+            else if (asteroidNumber % 8 == 2)
+            {
+                Instantiate(AsteroidPrefab3, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
+            else if (asteroidNumber % 8 == 3)
+            {
+                Instantiate(AsteroidPrefab4, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
+            else if (asteroidNumber % 8 == 4)
+            {
+                Instantiate(AsteroidPrefab5, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
+            else if (asteroidNumber % 8 == 5)
+            {
+                Instantiate(AsteroidPrefab6, new Vector3(
+                    Random.Range(-maxWidth, maxWidth),
+                    maxHeight + 3.0f,
+                    0.0f
+                ), Quaternion.identity);
+            }
+            else if (asteroidNumber % 8 == 6)
+            {
+                if (randomBuff == 0)
+                {
+                    Instantiate(Invisibility, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+                else if (randomBuff == 1)
+                {
+                    Instantiate(Weight, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(Magnet, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+            }
+            else if (asteroidNumber % 8 == 7)
+            {
+                if (randomBuff2 == 0)
+                {
+                    Instantiate(Coin, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+                else if (randomBuff2 == 1)
+                {
+                    Instantiate(Rocket, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(Bomb, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+            }
+            Random.seed = (int)System.DateTime.Now.Ticks;
         }
-        else if (asteroidNumber % 8 == 7)
+        else if (watchController == 3)
         {
-            if (randomBuff2 == 0)
-            {
-                Instantiate(Coin, new Vector3(
+            Instantiate(EnemyBird, new Vector3(
                     Random.Range(-maxWidth, maxWidth),
-                    maxHeight + 3.0f,
+                    maxHeight + -2.0f,
                     0.0f
-                ), Quaternion.identity);
-            }
-            else if (randomBuff2 == 1)
-            {
-                Instantiate(Rocket, new Vector3(
-                    Random.Range(-maxWidth, maxWidth),
-                    maxHeight + 3.0f,
-                    0.0f
-                ), Quaternion.identity);
-            }
-            else
-            {
-                Instantiate(Bomb, new Vector3(
-                    Random.Range(-maxWidth, maxWidth),
-                    maxHeight + 3.0f,
-                    0.0f
-                ), Quaternion.identity);
-            }
+                ), Quaternion.Euler(0,0,90));
         }
-        Random.seed = (int)System.DateTime.Now.Ticks;
     }
 
     public void AddScore(int points)
