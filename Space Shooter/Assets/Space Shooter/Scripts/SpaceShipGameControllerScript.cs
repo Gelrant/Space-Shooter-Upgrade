@@ -21,6 +21,8 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public GameObject Rocket;
     public GameObject Bomb;
 
+    Scene activeScene;
+
     public GameObject Ready;
     public GameObject Set;
     public GameObject Go;
@@ -42,6 +44,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        activeScene = SceneManager.GetActiveScene();
         watch = new Stopwatch();
         watch.Start();
         maxWidth = Camera.main.orthographicSize * Camera.main.aspect - 6.1f;
@@ -70,17 +73,21 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (watch.Elapsed.TotalSeconds > 60 && watchController ==0)
+        if (watch.Elapsed.TotalSeconds > 20 && watchController ==0)
         {
             CancelInvoke();
             watchController = 1;
             increaseDifficulty();
         }
-        else if (watch.Elapsed.TotalSeconds > 120 && watchController == 1)
+        else if (watch.Elapsed.TotalSeconds > 40 && watchController == 1)
         {
             CancelInvoke();
             watchController = 2;
             increaseDifficulty2();
+        }
+        else if (watch.Elapsed.TotalSeconds > 60 && watchController == 2 && (activeScene.name.Equals("Boss")))
+        {
+            CancelInvoke();
         }
     }
 
