@@ -14,6 +14,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public GameObject AsteroidPrefab6;
 
     public GameObject EnemyBird;
+    public GameObject BossPrefab;
 
     public GameObject Invisibility;
     public GameObject Weight;
@@ -49,8 +50,8 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
         activeScene = SceneManager.GetActiveScene();
         watch = new Stopwatch();
         watch.Start();
-        maxWidth = Camera.main.orthographicSize * Camera.main.aspect - 6.1f;
-        maxHeight = Camera.main.orthographicSize + 5;
+        maxWidth = Camera.main.orthographicSize - 0.5f;
+        maxHeight = Camera.main.orthographicSize + 3f;
         GamePlaySound.Play();
         StartCoroutine(Wait());
 
@@ -75,23 +76,29 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (watch.Elapsed.TotalSeconds > 10 && watchController ==0)
+        if (watch.Elapsed.TotalSeconds > 30 && watchController ==0)
         {
             CancelInvoke();
             watchController = 1;
             increaseDifficulty();
         }
-        else if (watch.Elapsed.TotalSeconds > 20 && watchController == 1)
+        else if (watch.Elapsed.TotalSeconds > 60 && watchController == 1)
         {
             CancelInvoke();
             watchController = 2;
             increaseDifficulty2();
         }
-        else if (watch.Elapsed.TotalSeconds > 30 && watchController == 2 && (activeScene.name.Equals("Boss")))
+        else if (watch.Elapsed.TotalSeconds > 80 && watchController == 2 && (activeScene.name.Equals("Boss")))
         {
             CancelInvoke();
             watchController = 3;
             StartCoroutine(Wait2());
+        }
+        else if (watch.Elapsed.TotalSeconds > 110 && watchController == 3 && (activeScene.name.Equals("Boss")))
+        {
+            CancelInvoke();
+            watchController = 4;
+            StartCoroutine(Wait3());
         }
     }
 
@@ -100,6 +107,13 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
         yield return new WaitForSeconds(3);
         increaseDifficulty3();
+    }
+
+    IEnumerator Wait3()
+    {
+
+        yield return new WaitForSeconds(5);
+        increaseDifficulty4();
     }
 
     void increaseDifficulty()
@@ -114,7 +128,16 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     void increaseDifficulty3()
     {
-        InvokeRepeating("CreateAsteroid", 1.0f, 1.5f);
+        InvokeRepeating("CreateAsteroid", 1.0f, 0.20f);
+    }
+
+    void increaseDifficulty4()
+    {
+        Instantiate(BossPrefab, new Vector3(
+                    (maxWidth/2)-2.0f,
+                    maxHeight + 6.0f,
+                    0.0f
+                ), Quaternion.Euler(0, 0, 90));
     }
 
     public void CreateAsteroid()

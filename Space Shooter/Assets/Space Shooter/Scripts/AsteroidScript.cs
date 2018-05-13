@@ -33,7 +33,17 @@ public class AsteroidScript : MonoBehaviour {
         }
         else if (type ==1)
         {
+            transform.Translate(-speed * Time.deltaTime, 0.0f, 0.0f);
 
+            if (transform.position.y < -maxHeight)
+                Destroy(gameObject);
+        }
+        else if (type ==2)
+        {
+            transform.Translate(-speed * Time.deltaTime, 0.0f, 0.0f);
+
+            if (transform.position.y < -maxHeight)
+                Destroy(gameObject);
         }
 
     }
@@ -46,7 +56,7 @@ public class AsteroidScript : MonoBehaviour {
             {
                 AudioSource.PlayClipAtPoint(asteroidDieSound, new Vector3(0,0,0));
 
-                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight" || this.gameObject.tag == "Rocket" || this.gameObject.tag == "Magnet" || this.gameObject.tag == "Bomb" || this.gameObject.tag == "EnemyBird"))
+                if (!(this.gameObject.tag == "Invisibility" || this.gameObject.tag == "Weight" || this.gameObject.tag == "Rocket" || this.gameObject.tag == "Magnet" || this.gameObject.tag == "Bomb"))
                 {
                     if (this.gameObject.tag == "Coin")
                     {

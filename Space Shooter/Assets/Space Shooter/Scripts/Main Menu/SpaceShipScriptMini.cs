@@ -16,7 +16,7 @@ public class SpaceShipScriptMini : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        maxWidth = Camera.main.orthographicSize * Camera.main.aspect + 25.1f;
+        maxWidth = Camera.main.orthographicSize * Camera.main.aspect + 20.1f;
         maxHeight = Camera.main.orthographicSize + 4.0f;
 
         gameController = FindObjectOfType<SpaceShipGameControllerScript>();

@@ -10,7 +10,7 @@ public class LaserScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        maxHeight = Camera.main.orthographicSize + 6.0f;
+        maxHeight = Camera.main.orthographicSize + 4.0f;
     }
 	
 	// Update is called once per frame
