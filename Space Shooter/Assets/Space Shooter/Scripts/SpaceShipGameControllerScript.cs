@@ -35,6 +35,9 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public Text ScoreText;
     public Text timeText;
 
+    public GameObject LoseUI;
+    public GameObject WinUI;
+
     public AudioSource GamePlaySound;
     public AudioSource BossGameplaySound;
 
@@ -58,6 +61,8 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        WinUI.SetActive(false);
+        LoseUI.SetActive(false);
         gameEnd = 0;
         timer.Start();
         ScoreText.text = "Score: " + score;
@@ -125,6 +130,11 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
             CancelInvoke();
             watchController = 4;
             StartCoroutine(Wait3());
+        }
+        if (gameEnd !=1 && watch.Elapsed.TotalSeconds > 120 && (activeScene.name.Equals("Boss")) && GameObject.FindWithTag("Boss") == null)
+        {
+            WinUI.SetActive(true);
+            gameEnd = 1;
         }
     }
 
@@ -299,21 +309,19 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     public void GameOver()
     {
-        showResetButton = true;
+        LoseUI.SetActive(true);
         gameEnd = 1;
     }
 
-    void OnGUI()
+    public void restartScene()
     {
+        int scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+    }
 
-        if (showResetButton)
-        {
-            if (GUI.Button(new Rect(Camera.main.pixelWidth / 2 - 40, Camera.main.pixelHeight / 2 - 15, 80, 30), "Try again"))
-            {
-                int scene = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(scene, LoadSceneMode.Single);
-            }
-        }
+    public void goMainMenu()
+    {
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
 
