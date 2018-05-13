@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Diagnostics;
+using UnityEngine.UI;
 
 public class SpaceShipGameControllerScript : MonoBehaviour {
 
@@ -30,6 +31,10 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public GameObject Set;
     public GameObject Go;
 
+    public GameObject UICanvas;
+    public Text ScoreText;
+    public Text timeText;
+
     public AudioSource GamePlaySound;
     public AudioSource BossGameplaySound;
 
@@ -37,17 +42,26 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     private float maxWidth;
     private float maxHeight;
 
+    private int gameEnd = 0;
+
     Stopwatch watch;
     int watchController = 0;
 
     public float asteroidPeriod = 1.0f;
 
+    private string passedTime;
     private int score = 0;
     private bool showResetButton = false;
+
+    Stopwatch timer = new Stopwatch();
 
     // Use this for initialization
     void Start()
     {
+        gameEnd = 0;
+        timer.Start();
+        ScoreText.text = "Score: " + score;
+        UICanvas.SetActive(true);
         activeScene = SceneManager.GetActiveScene();
         watch = new Stopwatch();
         watch.Start();
@@ -77,6 +91,16 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (gameEnd == 1)
+        {
+
+        }
+        else
+        {
+            int elapsedSeconds = (int)timer.Elapsed.TotalSeconds;
+            timeText.text = "Time: " + elapsedSeconds;
+        }
+        ScoreText.text = "Score: " + score;
         if (watch.Elapsed.TotalSeconds > 30 && watchController ==0)
         {
             CancelInvoke();
@@ -276,11 +300,11 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public void GameOver()
     {
         showResetButton = true;
+        gameEnd = 1;
     }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), "Score : " + score);
 
         if (showResetButton)
         {
