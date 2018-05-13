@@ -31,6 +31,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     public GameObject Go;
 
     public AudioSource GamePlaySound;
+    public AudioSource BossGameplaySound;
 
     private int asteroidNumber;
     private float maxWidth;
@@ -55,7 +56,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
         GamePlaySound.Play();
         StartCoroutine(Wait());
 
-        InvokeRepeating("CreateAsteroid", 6.0f, asteroidPeriod);
+        InvokeRepeating("CreateAsteroid", 6.0f, 1.5f);
 
     }
 
@@ -91,6 +92,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
         else if (watch.Elapsed.TotalSeconds > 80 && watchController == 2 && (activeScene.name.Equals("Boss")))
         {
             CancelInvoke();
+            BossGameplaySound.Play();
             watchController = 3;
             StartCoroutine(Wait2());
         }
@@ -104,8 +106,16 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     IEnumerator Wait2()
     {
-
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
+        GamePlaySound.volume = 0.10f;
+        yield return new WaitForSeconds(2);
+        GamePlaySound.volume = 0.05f;
+        yield return new WaitForSeconds(2);
+        GamePlaySound.volume = 0.03f;
+        yield return new WaitForSeconds(2);
+        GamePlaySound.volume = 0.01f;
+        yield return new WaitForSeconds(2);
+        GamePlaySound.Stop();
         increaseDifficulty3();
     }
 
@@ -118,17 +128,17 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     void increaseDifficulty()
     {
-        InvokeRepeating("CreateAsteroid", 1.0f, 0.5f);
+        InvokeRepeating("CreateAsteroid", 1.0f, 1f);
     }
 
     void increaseDifficulty2()
     {
-        InvokeRepeating("CreateAsteroid", 1.0f, 0.25f);
+        InvokeRepeating("CreateAsteroid", 1.0f, 0.5f);
     }
 
     void increaseDifficulty3()
     {
-        InvokeRepeating("CreateAsteroid", 1.0f, 0.20f);
+        InvokeRepeating("CreateAsteroid", 1.0f, 0.25f);
     }
 
     void increaseDifficulty4()
@@ -145,8 +155,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
         if (!(watchController == 3))
         {
             int asteroidNumber = Random.Range(0, 8);
-            int randomBuff = Random.Range(0, 3);
-            int randomBuff2 = Random.Range(0, 3);
+            int randomBuff = Random.Range(0, 5);
             if (asteroidNumber % 8 == 0)
             {
                 Instantiate(AsteroidPrefab, new Vector3(
@@ -213,6 +222,22 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
                         0.0f
                     ), Quaternion.identity);
                 }
+                else if (randomBuff == 2)
+                {
+                    Instantiate(Rocket, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
+                else if (randomBuff == 3)
+                {
+                    Instantiate(Bomb, new Vector3(
+                        Random.Range(-maxWidth, maxWidth),
+                        maxHeight + 3.0f,
+                        0.0f
+                    ), Quaternion.identity);
+                }
                 else
                 {
                     Instantiate(Magnet, new Vector3(
@@ -224,30 +249,12 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
             }
             else if (asteroidNumber % 8 == 7)
             {
-                if (randomBuff2 == 0)
-                {
                     Instantiate(Coin, new Vector3(
                         Random.Range(-maxWidth, maxWidth),
                         maxHeight + 3.0f,
                         0.0f
                     ), Quaternion.identity);
-                }
-                else if (randomBuff2 == 1)
-                {
-                    Instantiate(Rocket, new Vector3(
-                        Random.Range(-maxWidth, maxWidth),
-                        maxHeight + 3.0f,
-                        0.0f
-                    ), Quaternion.identity);
-                }
-                else
-                {
-                    Instantiate(Bomb, new Vector3(
-                        Random.Range(-maxWidth, maxWidth),
-                        maxHeight + 3.0f,
-                        0.0f
-                    ), Quaternion.identity);
-                }
+                
             }
             Random.seed = (int)System.DateTime.Now.Ticks;
         }
