@@ -39,6 +39,12 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         StartCoroutine(WaitBoss());
     }
 
+    public void PlayGameVersus()
+    {
+        laserSound.Play();
+        StartCoroutine(WaitVersus());
+    }
+
     IEnumerator Wait()
     {
    
@@ -51,6 +57,13 @@ public class MainMenu : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
+    }
+
+    IEnumerator WaitVersus()
+    {
+
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 3);
     }
 
     public void ExitGame()
