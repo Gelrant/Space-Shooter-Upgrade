@@ -37,13 +37,22 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     public GameObject LoseUI;
     public GameObject WinUI;
+    public GameObject PauseUI;
 
     public AudioSource GamePlaySound;
     public AudioSource BossGameplaySound;
 
+    public GameObject Background;
+    public Sprite sprite1;
+    public Sprite sprite2;
+    public Sprite sprite3;
+
     private int asteroidNumber;
     private float maxWidth;
     private float maxHeight;
+
+    private int canPause = 1;
+    private int isPaused = 0;
 
     private int gameEnd = 0;
 
@@ -61,6 +70,7 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
+        canPause = 1;
         WinUI.SetActive(false);
         LoseUI.SetActive(false);
         gameEnd = 0;
@@ -79,6 +89,21 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     }
 
+    public void Sprite1()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite1;
+    }
+
+    public void Sprite2()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite2;
+    }
+
+    public void Sprite3()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite3;
+    }
+
     IEnumerator Wait()
     {
         Ready.SetActive(true);
@@ -93,12 +118,43 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     }
 
+    public void Resume()
+    {
+        PauseUI.SetActive(false);
+        Time.timeScale = 1f;
+        timer.Start();
+        isPaused = 0;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (canPause == 1)
+            {
+                if (isPaused == 1)
+                {
+                    PauseUI.SetActive(false);
+                    Time.timeScale = 1f;
+                    timer.Start();
+                    isPaused = 0;
+                }
+                else
+                {
+                    PauseUI.SetActive(true);
+                    Time.timeScale = 0f;
+                    timer.Stop();
+                    isPaused = 1;
+
+                }
+            }
+        }
+    
+
         if (gameEnd == 1)
         {
-
+            canPause = 0;
         }
         else
         {
@@ -106,32 +162,32 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
             timeText.text = "Time: " + elapsedSeconds;
         }
         ScoreText.text = "Score: " + score;
-        if (watch.Elapsed.TotalSeconds > 30 && watchController ==0)
+        if (timer.Elapsed.TotalSeconds > 30 && watchController ==0)
         {
             CancelInvoke();
             watchController = 1;
             increaseDifficulty();
         }
-        else if (watch.Elapsed.TotalSeconds > 60 && watchController == 1)
+        else if (timer.Elapsed.TotalSeconds > 60 && watchController == 1)
         {
             CancelInvoke();
             watchController = 2;
             increaseDifficulty2();
         }
-        else if (watch.Elapsed.TotalSeconds > 80 && watchController == 2 && (activeScene.name.Equals("Boss")))
+        else if (timer.Elapsed.TotalSeconds > 80 && watchController == 2 && (activeScene.name.Equals("Boss")))
         {
             CancelInvoke();
             BossGameplaySound.Play();
             watchController = 3;
             StartCoroutine(Wait2());
         }
-        else if (watch.Elapsed.TotalSeconds > 110 && watchController == 3 && (activeScene.name.Equals("Boss")))
+        else if (timer.Elapsed.TotalSeconds > 110 && watchController == 3 && (activeScene.name.Equals("Boss")))
         {
             CancelInvoke();
             watchController = 4;
             StartCoroutine(Wait3());
         }
-        if (gameEnd !=1 && watch.Elapsed.TotalSeconds > 120 && (activeScene.name.Equals("Boss")) && GameObject.FindWithTag("Boss") == null)
+        if (gameEnd !=1 && timer.Elapsed.TotalSeconds > 120 && (activeScene.name.Equals("Boss")) && GameObject.FindWithTag("Boss") == null)
         {
             WinUI.SetActive(true);
             gameEnd = 1;
@@ -321,6 +377,10 @@ public class SpaceShipGameControllerScript : MonoBehaviour {
 
     public void goMainMenu()
     {
+        PauseUI.SetActive(false);
+        Time.timeScale = 1f;
+        timer.Start();
+        isPaused = 0;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
