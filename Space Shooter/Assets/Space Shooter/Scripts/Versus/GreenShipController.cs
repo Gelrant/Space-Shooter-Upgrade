@@ -4,13 +4,46 @@ using UnityEngine;
 
 public class GreenShipController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private float maxWidth;
+    private float speed = 7.0f;
+
+    public GameObject LaserGreenPrefab;
+    public AudioSource LaserSound;
+
+    public static int healthGreen = 3;
+
+    // Use this for initialization
+    void Start () {
+        maxWidth = Camera.main.orthographicSize - 1.5f;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (VersusController.canShootAndMove)
+        {
+            if (Input.GetKey("up"))
+            {
+                if (transform.position.x > -maxWidth)
+                {
+                    transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
+                }
+            }
+
+            if (Input.GetKey("down"))
+            {
+                if (transform.position.x < maxWidth)
+                {
+                    transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                Instantiate(LaserGreenPrefab, new Vector3(transform.position.x, transform.position.y - 0.7f, 0.0f), Quaternion.identity);
+                LaserSound.Play();
+            }
+        }
+
+
+    }
 }

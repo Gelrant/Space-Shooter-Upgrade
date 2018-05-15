@@ -1,19 +1,61 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class VersusController : MonoBehaviour {
 
     public AudioSource gameplayMusic;
-    public bool canShootAndMove = false;
+    public static bool canShootAndMove = false;
     public GameObject ready;
     public GameObject set;
     public GameObject go;
 
+    public GameObject greenWinUI;
+    public GameObject blueWinUI;
+
     // Use this for initialization
     void Start () {
         gameplayMusic.Play();
+        blueWinUI.SetActive(false);
+        greenWinUI.SetActive(false);
         StartCoroutine(Wait());
+    }
+
+    void Update()
+    {
+        if (GreenShipController.healthGreen == 0)
+        {
+            blueWinUI.SetActive(true);
+            greenWinUI.SetActive(false);
+        }
+        else if (BlueShipController.healthBlue == 0)
+        {
+            greenWinUI.SetActive(true);
+            blueWinUI.SetActive(false);
+        }
+    }
+
+    public void tryAgain()
+    {
+        canShootAndMove = false;
+        blueWinUI.SetActive(false);
+        greenWinUI.SetActive(false);
+        GreenShipController.healthGreen = 3;
+        BlueShipController.healthBlue = 3;
+        int scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+       
+    }
+
+    public void goMainMenu()
+    {
+        canShootAndMove = false;
+        blueWinUI.SetActive(false);
+        greenWinUI.SetActive(false);
+        GreenShipController.healthGreen = 3;
+        BlueShipController.healthBlue = 3;
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
     IEnumerator Wait()
