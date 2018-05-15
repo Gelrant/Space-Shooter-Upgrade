@@ -4,10 +4,43 @@ using UnityEngine;
 
 public class Armor : MonoBehaviour {
 
+    private float maxWidth;
+
     public AudioClip armorHitSound;
     public AudioClip armorDieSound;
 
     private int armor = 9;
+
+    private int toWhere = 0;
+
+    void Start()
+    {
+        maxWidth = Camera.main.orthographicSize - 1.5f;
+    }
+
+    void Update()
+    {
+        if (this.gameObject.tag == "MovingArmor")
+        {
+            if (transform.position.x > -maxWidth && toWhere == 0)
+            {
+                transform.Translate(Vector3.left * 3.0f * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                toWhere = 1;
+            }
+
+            if (transform.position.x < maxWidth && toWhere == 1)
+            {
+                transform.Translate(Vector3.right * 3.0f * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                toWhere = 0;
+            }
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
