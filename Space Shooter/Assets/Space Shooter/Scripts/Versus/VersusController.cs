@@ -12,6 +12,8 @@ public class VersusController : MonoBehaviour {
     public GameObject go;
 
     public GameObject greenWinUI;
+    public GameObject greenLastHealth;
+    public GameObject blueLastHealth;
     public GameObject blueWinUI;
 
     // Use this for initialization
@@ -26,11 +28,25 @@ public class VersusController : MonoBehaviour {
     {
         if (GreenShipController.healthGreen == 0)
         {
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Laser");
+
+            for (var i = 0; i < gameObjects.Length; i++)
+            {
+                Destroy(gameObjects[i]);
+            }
+            greenLastHealth.SetActive(false);
             blueWinUI.SetActive(true);
             greenWinUI.SetActive(false);
         }
         else if (BlueShipController.healthBlue == 0)
         {
+            GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Laser");
+
+            for (var i = 0; i < gameObjects.Length; i++)
+            {
+                Destroy(gameObjects[i]);
+            }
+            blueLastHealth.SetActive(false);
             greenWinUI.SetActive(true);
             blueWinUI.SetActive(false);
         }

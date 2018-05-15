@@ -10,6 +10,10 @@ public class GreenShipController : MonoBehaviour {
     public GameObject LaserGreenPrefab;
     public AudioSource LaserSound;
 
+    public GameObject health4;
+    public GameObject health5;
+    public GameObject health6;
+
     public static int healthGreen = 3;
 
     // Use this for initialization
@@ -19,6 +23,26 @@ public class GreenShipController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (healthGreen == 3)
+        {
+            health4.SetActive(true);
+            health5.SetActive(true);
+            health6.SetActive(true);
+        }
+        else if (healthGreen == 2)
+        {
+            health4.SetActive(false);
+        }
+        else if (healthGreen == 1)
+        {
+            health5.SetActive(false);
+        }
+        else if (healthGreen == 0)
+        {
+            health6.SetActive(false);
+        }
+
+
         if (VersusController.canShootAndMove)
         {
             if (Input.GetKey("up"))

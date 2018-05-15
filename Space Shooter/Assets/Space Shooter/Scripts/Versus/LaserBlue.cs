@@ -9,6 +9,7 @@ public class LaserBlue : MonoBehaviour {
     public AudioClip hitSound;
     public AudioClip destroySound;
 
+
     private float maxHeight;
 
     // Use this for initialization
