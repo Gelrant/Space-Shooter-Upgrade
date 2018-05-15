@@ -16,6 +16,15 @@ public class VersusController : MonoBehaviour {
     public GameObject blueLastHealth;
     public GameObject blueWinUI;
 
+    public GameObject Background;
+    public Sprite sprite1;
+    public Sprite sprite2;
+    public Sprite sprite3;
+
+    public GameObject pauseUI;
+    private int canPause = 0;
+    private int isPaused = 0;
+
     // Use this for initialization
     void Start () {
         gameplayMusic.Play();
@@ -24,8 +33,54 @@ public class VersusController : MonoBehaviour {
         StartCoroutine(Wait());
     }
 
+    public void Resume()
+    {
+        pauseUI.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = 0;
+        canShootAndMove = true;
+    }
+
+    public void Sprite1()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite1;
+    }
+
+    public void Sprite2()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite2;
+    }
+
+    public void Sprite3()
+    {
+        Background.GetComponent<SpriteRenderer>().sprite = sprite3;
+    }
+
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (canPause == 1)
+            {
+                if (isPaused == 1)
+                {
+                    pauseUI.SetActive(false);
+                    Time.timeScale = 1f;
+                    isPaused = 0;
+                    canShootAndMove = true;
+                }
+                else
+                {
+                    pauseUI.SetActive(true);
+                    Time.timeScale = 0f;
+                    isPaused = 1;
+                    canShootAndMove = false;
+
+                }
+            }
+        }
+
+
         if (GreenShipController.healthGreen == 0)
         {
             GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Laser");
@@ -34,6 +89,7 @@ public class VersusController : MonoBehaviour {
             {
                 Destroy(gameObjects[i]);
             }
+            canPause = 0;
             greenLastHealth.SetActive(false);
             blueWinUI.SetActive(true);
             greenWinUI.SetActive(false);
@@ -46,6 +102,7 @@ public class VersusController : MonoBehaviour {
             {
                 Destroy(gameObjects[i]);
             }
+            canPause = 0;
             blueLastHealth.SetActive(false);
             greenWinUI.SetActive(true);
             blueWinUI.SetActive(false);
@@ -66,9 +123,11 @@ public class VersusController : MonoBehaviour {
 
     public void goMainMenu()
     {
+        Time.timeScale = 1f;
         canShootAndMove = false;
         blueWinUI.SetActive(false);
         greenWinUI.SetActive(false);
+        pauseUI.SetActive(false);
         GreenShipController.healthGreen = 3;
         BlueShipController.healthBlue = 3;
         SceneManager.LoadScene(0, LoadSceneMode.Single);
@@ -86,6 +145,7 @@ public class VersusController : MonoBehaviour {
         yield return new WaitForSeconds(2.0f);
         go.SetActive(false);
         canShootAndMove = true;
+        canPause = 1;
 
     }
 
