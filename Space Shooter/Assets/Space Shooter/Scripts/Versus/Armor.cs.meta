@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5671d4d42b9d4148b3645be57ac07ac
+timeCreated: 1526411481
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - armorHitSound: {fileID: 8300000, guid: 30dba348a205448f2999c128259b3012, type: 3}
+  - armorDieSound: {fileID: 8300000, guid: b4a13eacc0f9f49798b5be579de2c12c, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
