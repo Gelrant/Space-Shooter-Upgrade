@@ -70,4 +70,16 @@ public class GreenShipController : MonoBehaviour {
 
 
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        StartCoroutine(ShowAndHide(this.gameObject, 0.1f));
+    }
+
+    IEnumerator ShowAndHide(GameObject go, float delay)
+    {
+        go.GetComponent<Renderer>().enabled = false;
+        yield return new WaitForSeconds(delay);
+        go.GetComponent<Renderer>().enabled = true;
+    }
 }
